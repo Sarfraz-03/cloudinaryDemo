@@ -52,40 +52,66 @@ function App() {
   };
 
   return (
-    <div className="p-5">
-      <form onSubmit={handleSubmit} className="space-y-3">
-        {error && <p className="text-red-600">{error}</p>}
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Form Section */}
+        <div className="flex justify-center mb-20">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+            <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Add New Card</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {error && <p className="text-red-600 text-center bg-red-50 p-2 rounded">{error}</p>}
 
-        <input
-          type="text"
-          placeholder="Name"
-          className="border p-2"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Card Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your card name"
+                  className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+              </div>
 
-        <input
-          type="number"
-          placeholder="Age"
-          className="border p-2"
-          value={form.age}
-          onChange={(e) => setForm({ ...form, age: e.target.value })}
-        />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Card Fancy Number </label>
+                <input
+                  type="number"
+                  placeholder="Enter your fancy number"
+                  className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={form.age}
+                  onChange={(e) => setForm({ ...form, age: e.target.value })}
+                />
+              </div>
 
-        <input
-          type="file"
-          onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
-        />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full border border-gray-300 p-3 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+                />
+              </div>
 
-        <button className="bg-blue-500 text-white px-4 py-2">
-          Submit
-        </button>
-      </form>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-medium"
+              >
+                Add Card
+              </button>
+            </form>
+          </div>
+        </div>
 
-      <div className="grid grid-cols-3 gap-4 mt-5">
-        {users.map((user) => (
-          <Card key={user._id} user={user} />
-        ))}
+        {/* Users Grid */}
+        <div>
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Cards</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {users.map((user) => (
+              <Card key={user._id} user={user} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
