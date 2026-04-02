@@ -3,10 +3,10 @@ const cloudinary = require("../config/cloudinary");
 
 exports.createUser = async (req, res) => {
   try {
-    const { name, age } = req.body;
+    const { imageName, imageNumber } = req.body;
 
-    if (!name || !age) {
-      return res.status(400).json({ error: "Name and age are required." });
+    if (!imageName || !imageNumber) {
+      return res.status(400).json({ error: "Image name and image number are required." });
     }
 
     if (!req.file) {
@@ -16,8 +16,8 @@ exports.createUser = async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path);
 
     const newUser = new User({
-      name,
-      age,
+      imageName,
+      imageNumber,
       image: result.secure_url,
     });
 

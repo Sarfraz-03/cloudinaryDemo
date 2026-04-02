@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
+  imageName: String,
+  imageNumber: Number,
   image: String,
 });
 

@@ -4,8 +4,8 @@ import Card from "./components/Card";
 
 function App() {
   const [form, setForm] = useState({
-    name: "",
-    age: "",
+    imageName: "",
+    imageNumber: "",
     image: null,
   });
 
@@ -30,20 +30,20 @@ function App() {
     e.preventDefault();
     setError("");
 
-    if (!form.name || !form.age || !form.image) {
-      setError("Name, age, and image are required.");
+    if (!form.imageName || !form.imageNumber || !form.image) {
+      setError("Image name, image number, and image file are required.");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("age", form.age);
+      formData.append("imageName", form.imageName);
+      formData.append("imageNumber", form.imageNumber);
       formData.append("image", form.image);
 
       await axios.post("http://localhost:5000/api/users", formData);
 
-      setForm({ name: "", age: "", image: null });
+      setForm({ imageName: "", imageNumber: "", image: null });
       fetchUsers();
     } catch (err) {
       console.error("Submit error", err.response || err);
@@ -67,8 +67,8 @@ function App() {
                   type="text"
                   placeholder="Enter your card name"
                   className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  value={form.imageName}
+                  onChange={(e) => setForm({ ...form, imageName: e.target.value })}
                 />
               </div>
 
@@ -78,8 +78,8 @@ function App() {
                   type="number"
                   placeholder="Enter your fancy number"
                   className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  value={form.age}
-                  onChange={(e) => setForm({ ...form, age: e.target.value })}
+                  value={form.imageNumber}
+                  onChange={(e) => setForm({ ...form, imageNumber: e.target.value })}
                 />
               </div>
 
