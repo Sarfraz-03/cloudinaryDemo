@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "./components/Card";
+import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
   const [form, setForm] = useState({
@@ -12,18 +13,18 @@ function App() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
 
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/users");
-      setUsers(res.data);
-    } catch (err) {
-      console.error("Failed to fetch users", err);
-      setError("Could not load users from server");
-    }
-  };
-
   useEffect(() => {
-    fetchUsers();
+    const loadUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users");
+        setUsers(res.data);
+      } catch (err) {
+        console.error("Failed to fetch users", err);
+        setError("Could not load users from server");
+      }
+    };
+
+    loadUsers();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -31,7 +32,7 @@ function App() {
     setError("");
 
     if (!form.imageName || !form.imageNumber || !form.image) {
-      setError("Image name, image number, and image file are required.");
+      setError("Image name, fancy number, and image file are required.");
       return;
     }
 
@@ -44,75 +45,184 @@ function App() {
       await axios.post("http://localhost:5000/api/users", formData);
 
       setForm({ imageName: "", imageNumber: "", image: null });
-      fetchUsers();
+
+      try {
+        const res = await axios.get("http://localhost:5000/api/users");
+        setUsers(res.data);
+      } catch (err) {
+        console.error("Failed to refresh users", err);
+      }
     } catch (err) {
       console.error("Submit error", err.response || err);
       setError(err.response?.data?.error || "Submission failed");
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-text shadow-sm transition-all duration-300 placeholder:text-gray-400 focus:border-primary-green focus:outline-none focus:ring-2 focus:ring-primary-green/40 dark:border-gray-600 dark:bg-dark-card dark:text-dark-text dark:placeholder:text-gray-500 dark:focus:border-dark-accent dark:focus:ring-dark-accent/40";
+
+  const labelClass =
+    "mb-2 block text-sm font-semibold text-text dark:text-dark-text";
+
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        {/* Form Section */}
-        <div className="flex justify-center mb-20">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-            <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Add New Card</h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <p className="text-red-600 text-center bg-red-50 p-2 rounded">{error}</p>}
+    <div className="min-h-screen bg-background text-text transition-colors duration-300 dark:bg-dark-bg dark:text-dark-text">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary-green focus:px-4 focus:py-2 focus:text-white focus:outline-none focus:ring-2 focus:ring-primary-dark-green"
+      >
+        Skip to main content
+      </a>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Card Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your card name"
-                  className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  value={form.imageName}
-                  onChange={(e) => setForm({ ...form, imageName: e.target.value })}
-                />
-              </div>
+      <header
+        className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md transition-colors duration-300 dark:border-gray-800 dark:bg-dark-bg/90"
+        role="banner"
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary-dark-green dark:text-dark-accent">
+              Image app
+            </p>
+            <h1 className="truncate text-lg font-bold text-text sm:text-xl dark:text-dark-text">
+              Image uploader demo
+            </h1>
+          </div>
+          <ThemeToggle />
+        </div>
+      </header>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Card Fancy Number </label>
-                <input
-                  type="number"
-                  placeholder="Enter your fancy number"
-                  className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  value={form.imageNumber}
-                  onChange={(e) => setForm({ ...form, imageNumber: e.target.value })}
-                />
-              </div>
+      <main
+        id="main-content"
+        className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+        role="main"
+      >
+        <section
+          className="mb-12 text-center sm:mb-14"
+          aria-labelledby="page-intro-heading"
+        >
+          <h2
+            id="page-intro-heading"
+            className="mb-3 text-3xl font-bold tracking-tight text-text sm:text-4xl dark:text-dark-text"
+          >
+            Upload your images
+          </h2>
+          <p className="mx-auto max-w-2xl text-base text-gray-600 dark:text-gray-400 sm:text-lg">
+            Give each upload an image name and a fancy number, then drop your
+            file. Everything shows up in the grid below.
+          </p>
+        </section>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="w-full border border-gray-300 p-3 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-medium"
+        <section
+          className="mb-14 sm:mb-16"
+          aria-labelledby="form-heading"
+        >
+          <div className="mx-auto max-w-lg">
+            <div className="rounded-2xl border border-border bg-card-bg p-6 shadow-sm transition-all duration-300 dark:border-gray-700/80 dark:bg-dark-card dark:shadow-none sm:p-8">
+              <h2
+                id="form-heading"
+                className="mb-6 text-center text-xl font-bold text-text dark:text-dark-text sm:text-2xl"
               >
-                Add Card
-              </button>
-            </form>
-          </div>
-        </div>
+                Add new image
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {error ? (
+                  <div
+                    className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300"
+                    role="alert"
+                  >
+                    {error}
+                  </div>
+                ) : null}
 
-        {/* Users Grid */}
-        <div>
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Cards</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {users.map((user) => (
-              <Card key={user._id} user={user} />
-            ))}
+                <div>
+                  <label htmlFor="image-name" className={labelClass}>
+                    Image name
+                  </label>
+                  <input
+                    id="image-name"
+                    name="imageName"
+                    type="text"
+                    autoComplete="off"
+                    placeholder="e.g. Sunset over the bay"
+                    className={inputClass}
+                    value={form.imageName}
+                    onChange={(e) =>
+                      setForm({ ...form, imageName: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="image-fancy-number" className={labelClass}>
+                    Fancy number
+                  </label>
+                  <input
+                    id="image-fancy-number"
+                    name="imageNumber"
+                    type="text"
+                    autoComplete="off"
+                    placeholder="e.g. #07, A-12, 001"
+                    className={inputClass}
+                    value={form.imageNumber}
+                    onChange={(e) =>
+                      setForm({ ...form, imageNumber: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="image-file" className={labelClass}>
+                    Image upload
+                  </label>
+                  <input
+                    id="image-file"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    className={`${inputClass} cursor-pointer file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primary-light-green file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-dark-green transition-all duration-300 file:transition-colors hover:file:bg-primary-green hover:file:text-white dark:file:bg-dark-accent/15 dark:file:text-dark-accent dark:hover:file:bg-dark-accent/25`}
+                    onChange={(e) =>
+                      setForm({ ...form, image: e.target.files?.[0] ?? null })
+                    }
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full rounded-xl bg-primary-green px-4 py-3 text-base font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary-dark-green hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] dark:bg-dark-accent dark:text-gray-900 dark:hover:bg-primary-green dark:hover:text-white dark:focus-visible:ring-dark-accent dark:focus-visible:ring-offset-dark-bg"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
+
+        <section aria-labelledby="gallery-heading">
+          <h2
+            id="gallery-heading"
+            className="mb-8 text-center text-2xl font-bold tracking-tight text-text dark:text-dark-text sm:text-3xl"
+          >
+            Your gallery
+          </h2>
+          {users.length === 0 ? (
+            <div
+              className="rounded-2xl border border-dashed border-border bg-card-bg/50 py-14 text-center dark:border-gray-700 dark:bg-dark-card/30"
+              role="status"
+            >
+              <p className="text-base text-gray-500 dark:text-gray-400">
+                No images yet. Submit the form above to add your first card.
+              </p>
+            </div>
+          ) : (
+            <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {users.map((user) => (
+                <li key={user._id}>
+                  <Card user={user} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </main>
     </div>
   );
 }

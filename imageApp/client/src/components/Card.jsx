@@ -1,14 +1,24 @@
-function Card({ user }) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-sm">
-      <img
-        src={user.image}
-        alt={`${user.imageName}'s profile`}
-        className="w-full h-48 object-cover rounded-md mb-4"
-      />
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">{user.imageName}</h2>
-      <p className="text-gray-600">Fancy number: {user.imageNumber}</p>
-    </div>
+function Card({ user }) {  return (
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card-bg shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border-gray-700/80 dark:bg-dark-card dark:shadow-none dark:hover:shadow-black/40">
+      <div className="relative aspect-[4/3] overflow-hidden bg-border dark:bg-gray-800">
+        <img
+          src={user.image}
+          alt=""
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="flex flex-1 flex-col gap-1 p-5 text-left">
+        <h3 className="text-lg font-bold leading-snug text-text dark:text-dark-text">
+          {user.imageName}
+        </h3>
+        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          Age{" "}
+          <span className="font-semibold text-primary-dark-green dark:text-dark-accent">
+            {user.imageNumber}
+          </span>
+        </p>
+      </div>
+    </article>
   );
 }
 

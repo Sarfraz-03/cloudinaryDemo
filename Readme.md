@@ -1,13 +1,13 @@
 # 📸 MERN Image Upload App (Cloudinary Integration)
 
-A full-stack MERN application that allows users to upload an image along with basic details (name and age), store the data in MongoDB, and display it in a modern card-based UI.
+A full-stack MERN application that allows users to upload an image along with basic details (imageName and imageNumber), store the data in MongoDB, and display it in a modern card-based UI.
 
 ---
 
 ## 🚀 Features
 
 * 📤 Upload images using **Cloudinary**
-* 🧾 Submit user details (Name, Age)
+* 🧾 Submit image details (imageName, imageNumber)
 * 🗄️ Store data in **MongoDB**
 * 🎴 Display data as responsive **cards**
 * ⚡ Built with **MERN Stack (MongoDB, Express, React, Node.js)**
@@ -131,8 +131,8 @@ POST /api/users
 
 **Form Data:**
 
-* name (string)
-* age (number)
+* imageName (string)
+* imageNumber (number)
 * image (file)
 
 ---

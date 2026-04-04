@@ -6,7 +6,9 @@ exports.createUser = async (req, res) => {
     const { imageName, imageNumber } = req.body;
 
     if (!imageName || !imageNumber) {
-      return res.status(400).json({ error: "Image name and image number are required." });
+      return res.status(400).json({
+        error: "Image name and fancy number are required.",
+      });
     }
 
     if (!req.file) {
