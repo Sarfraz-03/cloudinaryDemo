@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`)
         setUsers(res.data);
       } catch (err) {
         console.error("Failed to fetch users", err);
