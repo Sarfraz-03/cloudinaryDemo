@@ -42,12 +42,12 @@ function App() {
       formData.append("imageNumber", form.imageNumber);
       formData.append("image", form.image);
 
-      await axios.post("http://localhost:5000/api/users", formData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, formData);
 
       setForm({ imageName: "", imageNumber: "", image: null });
 
       try {
-        const res = await axios.get("http://localhost:5000/api/users");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
         setUsers(res.data);
       } catch (err) {
         console.error("Failed to refresh users", err);
