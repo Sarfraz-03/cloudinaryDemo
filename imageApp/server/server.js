@@ -4,6 +4,11 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: "*",
+}));
 
 dotenv.config();
 
