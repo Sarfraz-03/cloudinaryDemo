@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Card from "./components/Card";
 import ThemeToggle from "./components/ThemeToggle";
@@ -12,6 +12,7 @@ function App() {
 
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -45,6 +46,9 @@ function App() {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, formData);
 
       setForm({ imageName: "", imageNumber: "", image: null });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
 
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
@@ -83,7 +87,7 @@ function App() {
               Image app
             </p>
             <h1 className="truncate text-lg font-bold text-text sm:text-xl dark:text-dark-text">
-              Image uploader demo
+              Image cards
             </h1>
           </div>
           <ThemeToggle />
@@ -103,11 +107,11 @@ function App() {
             id="page-intro-heading"
             className="mb-3 text-3xl font-bold tracking-tight text-text sm:text-4xl dark:text-dark-text"
           >
-            Upload your images
+            Fancy image cards
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-600 dark:text-gray-400 sm:text-lg">
-            Give each upload an image name and a fancy number, then drop your
-            file. Everything shows up in the grid below.
+            Give each upload a name and a fancy number, then choose your image.
+            The gallery below shows the card title and its stylish number.
           </p>
         </section>
 
@@ -171,9 +175,10 @@ function App() {
 
                 <div>
                   <label htmlFor="image-file" className={labelClass}>
-                    Image upload
+                    Image file
                   </label>
                   <input
+                    ref={fileInputRef}
                     id="image-file"
                     name="image"
                     type="file"

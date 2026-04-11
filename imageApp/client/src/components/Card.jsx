@@ -12,7 +12,7 @@ function Card({ user }) {  return (
           {user.imageName}
         </h3>
         <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-          Age{" "}
+          Fancy number{" "}
           <span className="font-semibold text-primary-dark-green dark:text-dark-accent">
             {user.imageNumber}
           </span>
